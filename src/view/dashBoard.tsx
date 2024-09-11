@@ -2,7 +2,7 @@
 
 import MobileMenu from "../components/mobileMenu";
 import { SetStateAction, useState } from "react";
-
+import ThreeComponent from "./ThreeComponent";
 const DashBoard = () => {
     const [user, setUser] = useState(null);
     const [activeButton, setActiveButton] = useState(1);
@@ -23,7 +23,7 @@ const DashBoard = () => {
             {activeButton === 2 &&
                 <div className="h-screen w-screen flex items-center justify-center">
                     {/* <WalletCard /> */}
-                    tab 2
+                   <ThreeComponent chatBotState="talk" />
                 </div>
             }
             {activeButton === 3 &&
