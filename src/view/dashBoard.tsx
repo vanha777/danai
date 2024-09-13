@@ -4,6 +4,7 @@ import MobileMenu from "../components/mobileMenu";
 import { SetStateAction, useState } from "react";
 import ThreeComponent from "./ThreeComponent";
 const DashBoard = () => {
+    const [botState, setBotState] = useState("idle");
     const [user, setUser] = useState(null);
     const [activeButton, setActiveButton] = useState(1);
     const [tab, setTab] = useState(1);
@@ -21,9 +22,9 @@ const DashBoard = () => {
                 </div>
             }
             {activeButton === 2 &&
-            <div className="h-3/4 w-screen items-center justify-center pt-8 pb-8 pl-4 pr-6">
+                <div className="h-3/4 w-screen items-center justify-center pt-8 pb-8 pl-4 pr-6">
                     {/* <WalletCard /> */}
-                   <ThreeComponent chatBotState="idle" />
+                    <ThreeComponent chatBotState="talk" />
                 </div>
             }
             {activeButton === 3 &&
@@ -47,7 +48,7 @@ const DashBoard = () => {
                     </div>
                 </div>
             )} */}
-            {!user && tab == 1 &&
+            {/* {!user && tab == 1 &&
                 <div className="toast toast-top toast-end space-y-2">
                     <div className="alert alert-info p-4">
                         <div className="flex flex-row items-center space-x-2">
@@ -59,12 +60,23 @@ const DashBoard = () => {
                         </div>
                     </div>
                 </div>
-            }
-            {!user && tab == 2 &&
-                <div onClick={() => changeTab(1)} className="toast toast-top toast-end space-y-2">
-                    <span className="loading loading-infinity loading-lg "></span>
-                </div>
-            }
+            } */}
+
+            <div className="toast toast-top toast-center space-y-2 flex flex-col items-center ">
+                {botState === 'thinking' ? (
+                    <span className="loading loading-infinity loading-lg"></span>
+                ) : (
+                    <button
+                        className="bg-gray-800 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 transition duration-300 flex"
+                    >
+                        <svg width="20px" height="20px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9 0V2H13L16 8.5L13 15H3L0 8.5L3 2H7V0H9ZM4.59794 11.7384L8 12.2618L11.4021 11.7384L11.0979 9.76163L8 10.2382L4.90206 9.76163L4.59794 11.7384ZM7 6.75C7 7.44036 6.44036 8 5.75 8C5.05964 8 4.5 7.44036 4.5 6.75C4.5 6.05964 5.05964 5.5 5.75 5.5C6.44036 5.5 7 6.05964 7 6.75ZM10.25 8C10.9404 8 11.5 7.44036 11.5 6.75C11.5 6.05964 10.9404 5.5 10.25 5.5C9.55964 5.5 9 6.05964 9 6.75C9 7.44036 9.55964 8 10.25 8Z" fill="#ffffff" />
+                        </svg>
+                        <span className="ml-2 avatar online placeholder">  Anita</span>
+                    </button>
+                )}
+            </div>
+
 
 
             {/* <div className="flex flex-col lg:flex-row gap-20 items-center justify-center align-middle">
@@ -83,4 +95,4 @@ const DashBoard = () => {
     )
 }
 
-export default DashBoard ;
+export default DashBoard;
