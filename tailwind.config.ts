@@ -10,6 +10,9 @@ const config: Config = {
     extend: {},
   },
   plugins: [daisyui],
+  daisyui: {
+    themes: ["dark","light","black"], // You can add more themes here
+  },
 };
 
 export default config;

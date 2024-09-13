@@ -21,9 +21,9 @@ const DashBoard = () => {
                 </div>
             }
             {activeButton === 2 &&
-                <div className="h-screen w-screen flex items-center justify-center">
+            <div className="h-3/4 w-screen items-center justify-center pt-8 pb-8 pl-4 pr-6">
                     {/* <WalletCard /> */}
-                   <ThreeComponent chatBotState="talk" />
+                   <ThreeComponent chatBotState="idle" />
                 </div>
             }
             {activeButton === 3 &&

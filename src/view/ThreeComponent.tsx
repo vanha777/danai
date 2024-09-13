@@ -50,19 +50,37 @@ const ThreeComponent = (botState: { chatBotState?: string; }) => {
         <Canvas flat linear  >
             {/* <Suspense fallback={<SpinningLoadingIcon />} > */}
             <Camera />
-            <Environment preset="dawn" background blur={0.5} />
 
-            <directionalLight intensity={1} position={[2, 5, 3]} />
+            {/* with enviroment */}
+            {/* <Environment preset="dawn" background blur={0.5} /> */}
+
+            {/* <directionalLight intensity={1} position={[2, 5, 3]} /> */}
             {/* wait when model are being built */}
 
             {/* Additional ambient light for overall brightness */}
-            <ambientLight intensity={0.5} />
+            {/* <ambientLight intensity={0.5} /> */}
 
             {/* Soft fill light from the opposite side */}
-            <pointLight intensity={0.8} position={[-5, 5, -3]} />
+            {/* <pointLight intensity={0.8} position={[-5, 5, -3]} /> */}
 
             {/* Optional rim light for highlighting edges */}
-            <spotLight intensity={0.6} position={[-5, 10, 5]} angle={0.3} penumbra={1} />
+            {/* <spotLight intensity={0.6} position={[-5, 10, 5]} angle={0.3} penumbra={1} /> */}
+
+            {/* without enviroment */}
+            {/* <Environment preset="dawn" background blur={0.5} /> */}
+
+            {/* <directionalLight intensity={2} position={[2, 5, 3]} /> */}
+            {/* wait when model are being built */}
+
+            {/* Additional ambient light for overall brightness */}
+            <ambientLight intensity={5} />
+
+            {/* Soft fill light from the opposite side */}
+            {/* <pointLight intensity={1.5} position={[-5, 5, -3]} /> */}
+
+            {/* Optional rim light for highlighting edges */}
+            {/* <spotLight intensity={1} position={[-5, 10, 5]} angle={0.3} penumbra={1} /> */}
+
 
             <Model2 userState={chatBotState} />
             {/* </ Suspense> */}
