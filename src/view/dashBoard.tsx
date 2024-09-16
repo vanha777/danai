@@ -1,67 +1,344 @@
 "use client"
 
 import MobileMenu from "../components/mobileMenu";
-import { SetStateAction, useState } from "react";
+// import SetStateAction from "react";
 import ThreeComponent from "./ThreeComponent";
+import { useEffect, useState, useRef } from "react";
+// import { generateResponseAndAudio } from "../ultilities/ai";
+
+// declare global {
+//     interface Window {
+//         SpeechRecognition: any;
+//         webkitSpeechRecognition: any;
+//     }
+// }
+
 const DashBoard = () => {
-    const [botState, setBotState] = useState("idle");
-    const [user, setUser] = useState(null);
-    const [activeButton, setActiveButton] = useState(1);
-    const [tab, setTab] = useState(1);
-    const changeTab = (index: SetStateAction<number>) => {
-        console.log("changing tab")
-        setTab(index)
+
+    // const [isRecording, setIsRecording] = useState<boolean>(false);
+    // const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    // const [_transcript, setTranscript] = useState<string>("");
+    // const [model, setModel] = useState<string>("");
+    // const [_response, setResponse] = useState<string>("");
+    // const [_isLoading, setIsLoading] = useState<boolean>(false);
+
+    // //5. Ref hooks for speech recognition and silence detection
+    // const recognitionRef = useRef<any>(null);
+    // const silenceTimerRef = useRef<any>(null);
+
+    // const handleResult = (event: any): void => {
+    //     if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+    //     let interimTranscript = "";
+    //     for (let i = event.resultIndex; i < event.results.length; ++i) {
+    //         interimTranscript += event.results[i][0].transcript;
+    //     }
+    //     setTranscript(interimTranscript);
+    //     silenceTimerRef.current = setTimeout(() => {
+    //         //9.1 Extract and send detected words to backend
+    //         const words = interimTranscript.split(" ");
+    //         const modelKeywords = [
+    //             "gpt4",
+    //             "gpt",
+    //             "perplexity",
+    //             "local mistral",
+    //             "local llama",
+    //             "mixture",
+    //             "mistral",
+    //             "llama",
+    //         ];
+    //         const detectedModel = modelKeywords.find((keyword) =>
+    //             words.slice(0, 3).join(" ").toLowerCase().includes(keyword)
+    //         );
+    //         setModel(detectedModel || "gpt");
+    //         sendToBackend(interimTranscript, detectedModel);
+    //         setTranscript("");
+    //     }, 2000);
+    // };
+    // const sendToBackend = async (message: string, modelKeyword?: string): Promise<void> => {
+    //     setIsLoading(true);
+    //     if (modelKeyword) setModel(modelKeyword);
+    //     else if (!model) setModel("gpt-3.5");
+
+    //     try {
+    //         //7.1 Stop recording before sending data
+    //         stopRecording();
+
+    //         //7.2 Send POST request to backend
+    //         //   const response = await fetch("/api/chat", {
+    //         //     method: "POST",
+    //         //     headers: { "Content-Type": "application/json" },
+    //         //     body: JSON.stringify({ message, model: modelKeyword }),
+    //         //   });
+
+    //         //7.3 Check for response validity
+    //         //   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    //         //7.4 Process and play audio response if available
+    //         //   const data = await response.json();
+    //         const data = await generateResponseAndAudio(message, modelKeyword, "Patrick Ha");
+    //         if (data.data && data.contentType === "audio/mp3") {
+    //             const audioSrc = `data:audio/mp3;base64,${data.data}`;
+    //             const audio = new Audio(audioSrc);
+    //             setIsPlaying(true);
+    //             audio.play();
+    //             audio.onended = () => {
+    //                 setIsPlaying(false);
+    //                 startRecording();
+    //                 if (data.model) setModel(data.model);
+    //             };
+    //         }
+
+    //     } catch (error) {
+    //         //7.5 Handle errors during data transmission or audio playback
+    //         console.error("Error sending data to backend or playing audio:", error);
+    //     }
+    //     setIsLoading(false);
+    // };
+    // //10. Initialize speech recognition
+    // // const startRecording = () => {
+    // //     console.log("start recording");
+    // //     setIsRecording(true);
+    // //     setTranscript("");
+    // //     setResponse("");
+    // //     recognitionRef.current = new window.webkitSpeechRecognition();
+    // //     recognitionRef.current.continuous = true;
+    // //     recognitionRef.current.interimResults = true;
+    // //     recognitionRef.current.onresult = handleResult;
+    // //     recognitionRef.current.onend = () => {
+    // //         setIsRecording(false);
+    // //         if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+    // //     };
+    // //     recognitionRef.current.start();
+    // // };
+
+    // // const startRecording = () => {
+    // //     console.log("start recording");
+
+    // //     // Set up your states for recording
+    // //     setIsRecording(true);
+    // //     setTranscript("");
+    // //     setResponse("");
+
+    // //     // Check for SpeechRecognition or webkitSpeechRecognition
+    // //     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    // //     if (SpeechRecognition) {
+    // //         recognitionRef.current = new SpeechRecognition();
+    // //         recognitionRef.current.continuous = true; // Keep recognizing speech continuously
+    // //         recognitionRef.current.interimResults = true; // Capture interim results
+
+    // //         // Handle the result (transcript of speech)
+    // //         recognitionRef.current.onresult = (event: any) => {
+    // //             let transcript = "";
+    // //             for (let i = event.resultIndex; i < event.results.length; i++) {
+    // //                 transcript += event.results[i][0].transcript;
+    // //             }
+    // //             handleResult(transcript); // Update the transcript with the result
+    // //         };
+
+    // //         // Handle when recognition ends
+    // //         recognitionRef.current.onend = () => {
+    // //             setIsRecording(false);
+    // //             if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+    // //         };
+
+    // //         // Start the speech recognition
+    // //         recognitionRef.current.start();
+    // //     } else {
+    // //         console.error("SpeechRecognition API is not supported in this browser.");
+    // //     }
+    // // };
+
+    // const startRecording = () => {
+    //     console.log("start recording");
+
+    //     console.log("debug 0");
+    //     // Set up your states for recording
+    //     setIsRecording(true);
+    //     setTranscript("");
+    //     setResponse("");
+    
+    //     // Check for SpeechRecognition or webkitSpeechRecognition
+    //     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    //     console.log("debug 1");
+    //     if (SpeechRecognition) {
+    //         recognitionRef.current = new SpeechRecognition();
+    //         recognitionRef.current.continuous = false; // Stop recognizing after one session
+    //         recognitionRef.current.interimResults = true; // Capture interim results
+    
+    //         let fullTranscript = ""; // Store the complete transcript
+    
+    //         console.log("debug 2");
+    //         // Handle the result (transcript of speech)
+    //         recognitionRef.current.onresult = (event: any) => {
+    //             let interimTranscript = "";
+    //             for (let i = event.resultIndex; i < event.results.length; i++) {
+    //                 interimTranscript += event.results[i][0].transcript;
+    //             }
+    //             fullTranscript += interimTranscript; // Append interim results to full transcript
+    //             handleResult(interimTranscript); // Update the transcript with the result
+    //         };
+    
+    //         console.log("debug 3");
+    //         // Handle when recognition ends
+    //         recognitionRef.current.onend = () => {
+    //             setIsRecording(false);
+    //             console.log("Recording finished:", fullTranscript); // Log the final transcript
+    //         };
+    
+    //         console.log("debug 4");
+    //         // Start the speech recognition
+    //         recognitionRef.current.start();
+    
+    //         // Set timeout to stop recording after 5 seconds
+    //         setTimeout(() => {
+    //             if (recognitionRef.current) {
+    //                 recognitionRef.current.stop(); // Stop the recognition after 5 seconds
+    //             }
+    //         }, 5000); // 5000 milliseconds = 5 seconds
+    
+    //         console.log("debug 5");
+    //     } else {
+    //         console.error("SpeechRecognition API is not supported in this browser.");
+    //     }
+    // };
+    
+
+
+    // useEffect(
+    //     () => () => {
+    //         if (recognitionRef.current) recognitionRef.current.stop();
+    //     },
+    //     []
+    // );
+
+    // const stopRecording = () => {
+    //     if (recognitionRef.current) recognitionRef.current.stop();
+    // };
+
+    // //13. Toggle recording state
+    // const handleToggleRecording = () => {
+    //     if (!isRecording && !isPlaying) startRecording();
+    //     else if (isRecording) stopRecording();
+    // };
+
+    const [isRecording, setIsRecording] = useState<boolean>(false);
+    const [_audioUrl, setAudioUrl] = useState<string | null>(null);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const audioChunksRef = useRef<Blob[]>([]);
+    const streamRef = useRef<MediaStream | null>(null); // Store the media stream to stop it later
+  
+    const handleRecording = () => {
+      if (isRecording) {
+        // Stop the recording if it is currently ongoing
+        if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+          mediaRecorderRef.current.stop();
+        }
+        if (streamRef.current) {
+          // Stop all tracks of the stream to free up the microphone
+          streamRef.current.getTracks().forEach((track) => track.stop());
+        }
+        setIsRecording(false);
+      } else {
+        // Start a new recording
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then((stream: MediaStream) => {
+            streamRef.current = stream; // Store the stream so we can stop it later
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorderRef.current = mediaRecorder;
+  
+            // Collect audio data
+            mediaRecorder.ondataavailable = (event: BlobEvent) => {
+              audioChunksRef.current.push(event.data);
+            };
+  
+            // Start recording
+            mediaRecorder.start();
+            setIsRecording(true);
+  
+            // Stop recording automatically after 5 seconds
+            setTimeout(() => {
+              if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+                mediaRecorderRef.current.stop();
+              }
+              if (streamRef.current) {
+                streamRef.current.getTracks().forEach((track) => track.stop());
+              }
+            }, 5000);
+  
+            // Handle the stop event to process the audio
+            mediaRecorder.onstop = () => {
+              const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+              const audioUrl = URL.createObjectURL(audioBlob);
+              setAudioUrl(audioUrl);
+              audioChunksRef.current = []; // Reset chunks for future recordings
+            };
+          })
+          .catch((error: DOMException) => {
+            console.error('Error accessing the microphone:', error);
+          });
+      }
     };
+
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [_error, setError] = useState<string | null>(null);
+  
+    const openCamera = () => {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then((stream) => {
+            if (videoRef.current) {
+              videoRef.current.srcObject = stream;
+            }
+          })
+          .catch((err) => {
+            console.error("Error accessing the camera:", err);
+            setError('Error accessing the camera.');
+          });
+      } else {
+        setError('Camera access is not supported in this environment.');
+      }
+    };
+
+    const [botState, _setBotState] = useState("idle");
+    const [_user, _setUser] = useState(null);
+    const [activeButton, setActiveButton] = useState(1);
+    const [_tab, _setTab] = useState(1);
+
+    useEffect(() => {
+        if (activeButton === 2) {
+            console.log("activeButton is 2, turning on microphone...");
+            handleRecording();
+            openCamera();
+        }
+    }, [activeButton]);
+
+    // const changeTab = (index: SetStateAction<number>) => {
+    //     console.log("changing tab")
+    //     setTab(index)
+    // };
+
     return (
         <div>
             <MobileMenu activeButton={activeButton} setActiveButton={setActiveButton} />
-            {activeButton === 1 &&
+            <div className="h-3/4 w-screen items-center justify-center pt-8 pb-8 pl-4 pr-6">
+                <ThreeComponent chatBotState="talk" />
+            </div>
+            {/* {activeButton === 1 &&
                 <div className="h-screen w-screen flex items-center justify-center">
-                    {/* <Slider /> */}
                     tab 1
                 </div>
-            }
-            {activeButton === 2 &&
+            } */}
+            {/* {activeButton === 2 &&
                 <div className="h-3/4 w-screen items-center justify-center pt-8 pb-8 pl-4 pr-6">
-                    {/* <WalletCard /> */}
                     <ThreeComponent chatBotState="talk" />
                 </div>
-            }
-            {activeButton === 3 &&
+            } */}
+            {/* {activeButton === 3 &&
                 <div className="h-screen w-screen flex items-center justify-center">
-                    {/* <Connection /> */}
                     tab 3
                 </div>
-            }
-            {/* {!user && (
-                <div className="toast toast-top toast-end">
-                    <div role="alert" className="alert alert-info">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-info shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                       <span>Claim your account so that you don't lose your stuff!</span>
-                </div>
-                        <div className="">
-                            <button className="btn btn-sm btn-primary">Sign up!</button>
-                            <button className="btn btn-sm">
-                                <IconClose />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )} */}
-            {/* {!user && tab == 1 &&
-                <div className="toast toast-top toast-end space-y-2">
-                    <div className="alert alert-info p-4">
-                        <div className="flex flex-row items-center space-x-2">
-                            <svg onClick={() => changeTab(2)} xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span className="block text-sm md:text-base lg:text-lg">
-                                Claim your account now !
-                            </span>
-                            <button className="btn btn-sm btn-primary">Sign up!</button>
-                        </div>
-                    </div>
-                </div>
             } */}
-
             <div className="toast toast-top toast-center space-y-2 flex flex-col items-center ">
                 {botState === 'thinking' ? (
                     <span className="loading loading-infinity loading-lg"></span>
@@ -76,20 +353,6 @@ const DashBoard = () => {
                     </button>
                 )}
             </div>
-
-
-
-            {/* <div className="flex flex-col lg:flex-row gap-20 items-center justify-center align-middle">
-                <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-                    <main className="flex-1 flex flex-col lg:flex-row gap-6">
-                        <div className="flex flex-col lg:flex-row lg:space-x-4 space-y-4"> */}
-            {/* <ProfileCard /> */}
-            {/* <WalletCard /> */}
-            {/* </div>
-                    </main>
-                </div>
-            </div> */}
-
         </div>
 
     )

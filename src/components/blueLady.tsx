@@ -109,10 +109,10 @@
 
 // useGLTF.preload('/blueLady.glb')
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Group } from 'three';
 import { useGLTF, useAnimations } from '@react-three/drei';
-import { Mesh, SkinnedMesh, Material, MeshStandardMaterial } from 'three';
+import { MeshStandardMaterial } from 'three';
 import * as THREE from 'three';
 
 // Define types for GLTF model components

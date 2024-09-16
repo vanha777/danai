@@ -21,6 +21,9 @@
     }
   },
   "bundle": {
+    "iOS": {
+      "minimumSystemVersion": "13.0"
+    },
     "active": true,
     "targets": "all",
     "icon": [

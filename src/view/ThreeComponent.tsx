@@ -1,9 +1,9 @@
 
-import React, { Suspense, useRef, useState, useEffect } from 'react';
+// import React, { Suspense, useRef, useState, useEffect } from 'react';
 // import Model from './IronMan';
 import Model2 from '../components/blueLady.js';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
+// import { OrbitControls, Environment } from '@react-three/drei';
 // import SpinningLoadingIcon from './SpinningLoadingIcon.jsx';
 
 // Define the hook to set up the camera
