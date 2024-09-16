@@ -10,13 +10,12 @@ interface ResponseData {
     model: string;
 }
 
-const key = "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";
 // dotenv.config();
-// const api = process.env.OPENAI_API_KEY;
+const api = process.env.OPENAI_API_KEY;
 // 3. Initialize the OpenAI instance (could be passed as config instead of dotenv)
 const openai = new OpenAI({
     // apiKey: api,  // Make sure to pass this securely in React or as a parameter
-    apiKey: key,
+    apiKey: api,
     dangerouslyAllowBrowser: true
 });
 
@@ -98,7 +97,7 @@ export async function generateResponseAndAudio(message: string, modelName: strin
     // 8. Handle different model cases
     if (modelName === "gpt") {
         const llm = new LangchainOpenAI({
-            openAIApiKey: key, // Use your OpenAI API Key here
+            openAIApiKey: api, // Use your OpenAI API Key here
             modelName: 'gpt-4o-mini'
         });
         gptMessage = await llm.invoke(commonPrompt);  // Invoke the model with the prompt
