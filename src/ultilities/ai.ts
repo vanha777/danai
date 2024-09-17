@@ -4,14 +4,13 @@ import { OpenAI as LangchainOpenAI } from "@langchain/openai"; // Assuming Langc
 // import dotenv from "dotenv";
 
 // 2. Define the response data structure
-interface ResponseData {
+export interface ResponseData {
     data: string;
     contentType: string;
     model: string;
 }
 
-// dotenv.config();
-const api = process.env.OPENAI_API_KEY;
+const api = "";
 // 3. Initialize the OpenAI instance (could be passed as config instead of dotenv)
 const openai = new OpenAI({
     // apiKey: api,  // Make sure to pass this securely in React or as a parameter
@@ -19,17 +18,72 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true
 });
 
+export const sendAudioToTranscriptionAPI = async (audioBlob: Blob): Promise<ResponseData | undefined> => {
+    try {
+        // Check and log the actual Blob type before sending it to Whisper API
+        console.log("Sending audioBlob for transcription. Blob Type:", audioBlob.type);
+
+        // Send the audioBlob as it is (without forcing MP3)
+        const response = await openai.audio.transcriptions.create({
+            file: new File([audioBlob], "audio.wav"), // Using the default format provided by the browser
+            model: "whisper-1", // Whisper model for transcription
+            // response_format: "text",
+        });
+        const text = response.text;
+        console.log("Whisper API Response:", text); // Inspect API response
+        const audioRes = await generateResponseAndAudio(text, "gpt", "Patrick Ha");
+        console.log("Audio Response:", audioRes); // Inspect API response
+        return audioRes; // Return the generated response data
+    } catch (error) {
+        console.error("Error transcribing audio:", error);
+
+        // Return undefined or a default value if an error occurs
+        return undefined; // You could also return a default ResponseData object if necessary
+    }
+};
+
+
 // 4. Function to create audio from text using OpenAI
+// async function createAudio(fullMessage: string, voice: "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer"): Promise<string> {
+//     console.log("this is resposnse message ,", fullMessage);
+//     const mp3 = await openai.audio.speech.create({
+//         model: "tts-1",
+//         voice: voice,
+//         input: fullMessage,
+//     });
+//     const buffer = Buffer.from(await mp3.arrayBuffer());
+//     return buffer.toString('base64');  // Return the base64-encoded audio
+// }
 async function createAudio(fullMessage: string, voice: "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer"): Promise<string> {
-    console.log("this is resposnse message ,", fullMessage);
+    console.log("this is response message,", fullMessage);
+  
+    // Call the OpenAI API to generate the audio
     const mp3 = await openai.audio.speech.create({
-        model: "tts-1",
-        voice: voice,
-        input: fullMessage,
+      model: "tts-1",
+      voice: voice,
+      input: fullMessage,
     });
-    const buffer = Buffer.from(await mp3.arrayBuffer());
-    return buffer.toString('base64');  // Return the base64-encoded audio
-}
+  
+    // Convert the resulting ArrayBuffer to base64
+    const arrayBuffer = await mp3.arrayBuffer();
+    const base64String = arrayBufferToBase64(arrayBuffer);
+  
+    return base64String;  // Return the base64-encoded audio
+  }
+  
+  // Helper function to convert ArrayBuffer to base64 string
+  function arrayBufferToBase64(buffer: ArrayBuffer): string {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+  
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+  
+    return window.btoa(binary);  // Convert binary string to base64
+  }
+  
 
 // 5. Function to simulate generating responses from various models (OpenAI, Langchain, Ollama, etc.)
 export async function generateResponseAndAudio(message: string, modelName: string = "gpt", userName: string): Promise<ResponseData> {

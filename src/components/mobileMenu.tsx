@@ -5,13 +5,18 @@ import React from 'react';
 interface MobileMenuProps {
     activeButton?: number;
     setActiveButton: (buttonIndex: number) => void;
+    recording: () => void;
 }
 
-const MobileMenu: React.FC<MobileMenuProps> = ({ activeButton, setActiveButton }) => {
+const MobileMenu: React.FC<MobileMenuProps> = ({ activeButton, setActiveButton, recording }) => {
     // const [activeButton, setActiveButton] = useState(0);
     const handleButtonClick = (buttonIndex: number) => {
-        console.log("this is active button ",activeButton);
+        console.log("this is active button ", activeButton);
         setActiveButton(buttonIndex);
+    };
+    const handleRecording = () => {
+        console.log("microphone press");
+        recording();
     };
     // const handleSignOut = async () => {
 
@@ -42,7 +47,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ activeButton, setActiveButton }
                         borderRadius: '50%',
                         background: 'linear-gradient(135deg, #DA07ED, #3066BE, #6EFAFB)',
                     }}
-                    onClick={() => handleButtonClick(2)}
+                    onClick={() => handleRecording()}
                 >
                     <svg stroke="currentColor" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19 10V12C19 15.866 15.866 19 12 19M5 10V12C5 15.866 8.13401 19 12 19M12 19V22M8 22H16M12 15C10.3431 15 9 13.6569 9 12V5C9 3.34315 10.3431 2 12 2C13.6569 2 15 3.34315 15 5V12C15 13.6569 13.6569 15 12 15Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
