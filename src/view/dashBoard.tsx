@@ -261,14 +261,14 @@ const DashBoard = () => {
           setIsRecording(true);
 
           // Stop recording automatically after 5 seconds
-          setTimeout(() => {
-            if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-              mediaRecorderRef.current.stop();
-            }
-            if (streamRef.current) {
-              streamRef.current.getTracks().forEach((track) => track.stop());
-            }
-          }, 5000);
+          // setTimeout(() => {
+          //   if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+          //     mediaRecorderRef.current.stop();
+          //   }
+          //   if (streamRef.current) {
+          //     streamRef.current.getTracks().forEach((track) => track.stop());
+          //   }
+          // }, 10000);
 
           // Handle the stop event to process the audio
           // mediaRecorder.onstop = () => {

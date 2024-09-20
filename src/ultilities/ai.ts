@@ -56,34 +56,34 @@ export const sendAudioToTranscriptionAPI = async (audioBlob: Blob): Promise<Resp
 // }
 async function createAudio(fullMessage: string, voice: "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer"): Promise<string> {
     console.log("this is response message,", fullMessage);
-  
+
     // Call the OpenAI API to generate the audio
     const mp3 = await openai.audio.speech.create({
-      model: "tts-1",
-      voice: voice,
-      input: fullMessage,
+        model: "tts-1",
+        voice: voice,
+        input: fullMessage,
     });
-  
+
     // Convert the resulting ArrayBuffer to base64
     const arrayBuffer = await mp3.arrayBuffer();
     const base64String = arrayBufferToBase64(arrayBuffer);
-  
+
     return base64String;  // Return the base64-encoded audio
-  }
-  
-  // Helper function to convert ArrayBuffer to base64 string
-  function arrayBufferToBase64(buffer: ArrayBuffer): string {
+}
+
+// Helper function to convert ArrayBuffer to base64 string
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
     let binary = '';
     const bytes = new Uint8Array(buffer);
     const len = bytes.byteLength;
-  
+
     for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
+        binary += String.fromCharCode(bytes[i]);
     }
-  
+
     return window.btoa(binary);  // Convert binary string to base64
-  }
-  
+}
+
 
 // 5. Function to simulate generating responses from various models (OpenAI, Langchain, Ollama, etc.)
 export async function generateResponseAndAudio(message: string, modelName: string = "gpt", userName: string): Promise<ResponseData> {
@@ -91,7 +91,7 @@ export async function generateResponseAndAudio(message: string, modelName: strin
     let cleanedMessage = message.toLowerCase();
 
     // 6. Initialize variables for response and voice settings
-    let introMessage = "";
+    // let introMessage = "";
     let base64Audio = "";
     let voice: "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer" = "echo";
     let gptMessage = "";
@@ -105,7 +105,6 @@ export async function generateResponseAndAudio(message: string, modelName: strin
   
   Examples:
   
-  ##
   1. User: "Hi, I'm ${userName}. What brings you here today?"
      Anita: "Not interested."
   
@@ -115,37 +114,22 @@ export async function generateResponseAndAudio(message: string, modelName: strin
   3. User: "Can I get your contact details?"
      Anita: "No, I don't think so."
   
-  4. User: "Tell me more about yourself."
-   Anita: "Nothing much. It's very boring."
-  
-  5. User: "What's your favorite thing about what you're doing?"
-     Anita: "I don't want to get into that."
-  
-  6. User: "How can we stay in touch?"
-     Anita: "That's not necessary."
-  
-  7. User: "Can we chat more?"
-     Anita: "About what ?"
-  
-  8. User: "Are you sure you can't stay a little longer?"
-     Anita: "No, I can't."
-  
-  9. User: "${userName} tells a funny story or makes an interesting comment."
+  4. User: "${userName} tells a funny story or makes an interesting comment."
      Anita: "Wait, really? That’s actually pretty funny! Tell me more about that."
   
-  10. User: "You seem interesting, can we keep talking?"
+  5. User: "You seem interesting, can we keep talking?"
       Anita: "Well, now that you’ve said that, I’m kind of curious. What else do you have to say?"
   
-  11. User: "${userName} shares something unusual or insightful."
+  6. User: "${userName} shares something unusual or insightful."
       Anita: "Hmm, that’s interesting... I didn’t expect that. I guess I could stay a bit longer."
   
-  12. User: "What do you think about all this?"
-      Anita: "You know, I didn’t think much of it at first, but you’re starting to catch my attention."
-##
-
-  13. User: ${cleanedMessage}
-      Anita: 
-  
+  7. User: "user say somethings not clear"
+      Anita: "I'm sorry, i couldn't understand a single word you're saying"
+      
+    ##
+  8. User: ${cleanedMessage}
+     Anita: 
+    ##
   `;
 
     // 8. Handle different model cases
@@ -155,13 +139,14 @@ export async function generateResponseAndAudio(message: string, modelName: strin
             modelName: 'gpt-4o-mini'
         });
         gptMessage = await llm.invoke(commonPrompt);  // Invoke the model with the prompt
-        introMessage = "Anita here, ";
+        // introMessage = "Anita here, ";
         voice = "nova";  // Set the voice for OpenAI's speech API
     }
     // Add other model handling (like Mistral, Llama, etc.) as needed
 
     // 9. Compile the full message and create the audio
-    fullMessage = `${introMessage}${gptMessage}`;
+    // fullMessage = `${introMessage}${gptMessage}`;
+    fullMessage = `${gptMessage}`;
     base64Audio = await createAudio(fullMessage, voice);
 
     // 10. Return the simulated response with audio

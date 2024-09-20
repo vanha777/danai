@@ -38,10 +38,18 @@ const ThreeComponent = (botState: { chatBotState?: string; }) => {
     //         // cameraSetRef.current = true;
     //     });
     // }
+    // const Camera = () => {
+    //     const { camera } = useThree();
+    //     useFrame(() => {
+    //         camera.position.set(0.15, 3.25, 0.75);
+    //         camera.lookAt(0, 3.25, 0);
+    //     });
+    //     return null; // This component does not render anything
+    // };
     const Camera = () => {
         const { camera } = useThree();
         useFrame(() => {
-            camera.position.set(0.15, 3.25, 0.75);
+            camera.position.set(0.15, 3.25, 5.75);
             camera.lookAt(0, 3.25, 0);
         });
         return null; // This component does not render anything
