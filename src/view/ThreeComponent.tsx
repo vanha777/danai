@@ -1,8 +1,8 @@
 
 // import React, { Suspense, useRef, useState, useEffect } from 'react';
 // import Model from './IronMan';
-import Model2 from '../components/blueLady.js';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { BoxModel } from '../components/box.js';
 // import { OrbitControls, Environment } from '@react-three/drei';
 // import SpinningLoadingIcon from './SpinningLoadingIcon.jsx';
 
@@ -49,8 +49,8 @@ const ThreeComponent = (botState: { chatBotState?: string; }) => {
     const Camera = () => {
         const { camera } = useThree();
         useFrame(() => {
-            camera.position.set(0.15, 3.25, 5.75);
-            camera.lookAt(0, 3.25, 0);
+            camera.position.set(0.15, 5.15, 7.75);
+            camera.lookAt(0, 2.25, 0);
         });
         return null; // This component does not render anything
     };
@@ -62,7 +62,6 @@ const ThreeComponent = (botState: { chatBotState?: string; }) => {
             {/* with enviroment */}
             {/* <Environment preset="dawn" background blur={0.5} /> */}
 
-            {/* <directionalLight intensity={1} position={[2, 5, 3]} /> */}
             {/* wait when model are being built */}
 
             {/* Additional ambient light for overall brightness */}
@@ -72,16 +71,16 @@ const ThreeComponent = (botState: { chatBotState?: string; }) => {
             {/* <pointLight intensity={0.8} position={[-5, 5, -3]} /> */}
 
             {/* Optional rim light for highlighting edges */}
-            {/* <spotLight intensity={0.6} position={[-5, 10, 5]} angle={0.3} penumbra={1} /> */}
+            {/* <spotLight intensity={10} position={[-5, 10, 5]} angle={0.3} penumbra={1} /> */}
 
             {/* without enviroment */}
             {/* <Environment preset="dawn" background blur={0.5} /> */}
 
-            {/* <directionalLight intensity={2} position={[2, 5, 3]} /> */}
+            <directionalLight intensity={10} position={[2, 5, 3]} />
             {/* wait when model are being built */}
 
             {/* Additional ambient light for overall brightness */}
-            <ambientLight intensity={5} />
+            {/* <ambientLight intensity={10} /> */}
 
             {/* Soft fill light from the opposite side */}
             {/* <pointLight intensity={1.5} position={[-5, 5, -3]} /> */}
@@ -90,7 +89,8 @@ const ThreeComponent = (botState: { chatBotState?: string; }) => {
             {/* <spotLight intensity={1} position={[-5, 10, 5]} angle={0.3} penumbra={1} /> */}
 
 
-            <Model2 userState={chatBotState} />
+            {/* <Model2 userState={chatBotState} /> */}
+            <BoxModel userState={chatBotState} />
             {/* </ Suspense> */}
             {/*<OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />*/}
 
