@@ -33,6 +33,9 @@ export function BoxModel({ userState, ...props }: ModelProps & { userState?: str
             // Handle case where actions might be null or undefined
             return;
         }
+        if (userState === 'idle') {
+            return;
+        }
         console.log(userState);
         console.log("this is action ", actions);
         actions.MorphBake?.reset().fadeIn(0.5).play();
